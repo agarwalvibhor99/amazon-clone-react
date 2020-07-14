@@ -29,8 +29,8 @@ const Product = ({ id, title, image, price, rating }) => {
         <div className={styles.productRating}>
           {Array(rating)
             .fill()
-            .map((_) => (
-              <p>⭐️</p>
+            .map((_, index) => (
+              <p key={index}>⭐️</p>
             ))}
         </div>
       </div>
