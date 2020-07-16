@@ -4,9 +4,15 @@ import { Link } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import { useStateValue } from "../../context/StateProvider";
+import { auth } from "../../firebase";
 
 const Header = () => {
-  const [{ basket }] = useStateValue();
+  const [{ basket, user }] = useStateValue();
+  const login = () => {
+    if (user) {
+      auth.signOut();
+    }
+  };
   return (
     <nav className={styles.header}>
       <Link to="/">
@@ -22,14 +28,18 @@ const Header = () => {
       </div>
 
       <div className={styles.headerNav}>
-        <Link to="/login" className={styles.headerLink}>
-          <div className={styles.headerOption}>
-            <span className={styles.headerOptionLineOne}>Hello</span>
-            <span className={styles.headerOptionLineTwo}>Sign In</span>
+        <Link to={!user && "/login"} className={styles.headerLink}>
+          <div onClick={login} className={styles.headerOption}>
+            <span className={styles.headerOptionLineOne}>
+              Hello {user?.email}
+            </span>
+            <span className={styles.headerOptionLineTwo}>
+              {user ? "Sign Out" : "Sign In"}
+            </span>
           </div>
         </Link>
 
-        <Link to="/login" className={styles.headerLink}>
+        <Link to="/" className={styles.headerLink}>
           <div className={styles.headerOption}>
             <span className={styles.headerOptionLineOne}>Returns</span>
             <span className={styles.headerOptionLineTwo}>& Orders</span>
